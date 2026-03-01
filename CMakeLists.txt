@@ -31,6 +31,10 @@ target_include_directories(assimp
 #create exe for tests
 add_executable(myGlTest
         src/main.cpp
+        src/Window.h
+        src/Window.cpp
+        src/Camera.h
+        src/Camera.cpp
         src/glad.c
 )
 
