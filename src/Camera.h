@@ -13,17 +13,21 @@ enum class Direction {
     Back
 };
 
-//Camera base class
+/**
+ * Camera base class. Should not be used as a camera object. Rather use the specific subclass for specific task.
+ */
 class Camera {
 public:
-    Camera(float fov, float aspect_ratio);
-    Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, float aspect_ratio);
+    Camera(float fov, int width, int height);
+    Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, int width, int height);
+    Camera(const Camera& other) = delete;
+    Camera& operator=(const Camera& other) = delete;
     virtual ~Camera(){ this->unsetCallbacks();};
     virtual void move(const float& speed, Direction dir){};
 
-    glm::mat4 view() const {return glm::lookAt(position, position + front, up);};
-    glm::vec3 getPos() const {return this->position;};
-    glm::vec3 getFront() const {return this->front;};
+    [[nodiscard]] glm::mat4 view() const {return glm::lookAt(position, position + front, up);};
+    [[nodiscard]] glm::vec3 getPos() const {return this->position;};
+    [[nodiscard]] glm::vec3 getFront() const {return this->front;};
 
     //all functions for mouse callbacks
     void setCallbacks(GLFWwindow* window);
@@ -31,20 +35,20 @@ public:
     void moveCursorCallback(GLFWwindow* window, double xPos, double yPos);
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 protected:
-    glm::vec3 position;
-    glm::vec3 front;
-    glm::vec3 up;
+    glm::vec3 position = glm::vec3{0.f};
+    glm::vec3 front = glm::vec3{0.0f, 0.0f, -1.f};
+    glm::vec3 up = glm::vec3{0.f, 1.f, 0.f};
     float fov;
     float aspect_ratio;
 
     //variables for camera angle and mouse callbacks
-    float lastX = 0.f;
-    float lastY = 0.f;
+    float lastX;
+    float lastY;
     float yaw = -90.f;
     float pitch = 0.f;
     bool first_mouse = true;
     bool is_active = false;
-    GLFWwindow* active_window = nullptr;
+    GLFWwindow* active_window = nullptr; //TODO: remove later for implementation of proper event handler
 };
 
 /**

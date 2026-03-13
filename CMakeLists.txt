@@ -36,6 +36,11 @@ add_executable(myGlTest
         src/Camera.h
         src/Camera.cpp
         src/glad.c
+        src/Shader.h
+        src/Shader.cpp
+        src/Canvas.cpp
+        src/Canvas.h
+        src/myGl.h
 )
 
 if(MSVC)
@@ -49,6 +54,7 @@ set_target_properties(myGlTest PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO)
+
 
 #link libraries
 target_link_libraries(myGlTest

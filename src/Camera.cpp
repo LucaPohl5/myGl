@@ -11,22 +11,21 @@ void setSensitivity(const float& sens) {
     sensitivity = sens;
 }
 
-Camera::Camera(float fov, float aspect_ratio) :
-    position{0.f}, front{0.f, 0.f, -1.f}, up{0.f, 1.f, 0.f},
-    fov{fov}, aspect_ratio{aspect_ratio}{}
+Camera::Camera(float fov, int width, int height) :
+    fov{fov}, aspect_ratio{static_cast<float>(width) / static_cast<float>(height)},
+    lastX{static_cast<float>(width) / 2.f}, lastY{static_cast<float>(height) / 2.f} {}
 
 
-Camera::Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, float aspect_ratio) :
+Camera::Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, int width, int height) :
     position{pos}, front{front}, up{up},
-    fov{fov}, aspect_ratio{aspect_ratio}
-    {}
+    fov{fov}, lastX{static_cast<float>(width) / 2}, lastY{static_cast<float>(height) / 2},
+    aspect_ratio{static_cast<float>(width) / static_cast<float>(height)} {}
 
 
 /**
  * sets the glfw mouseCursorPosCallback and mouseScrollCallback to change this cameras view
  */
 void Camera::setCallbacks(GLFWwindow* window) {
-    std::cout << "Set new Callbacks" << std::endl;
     is_active = true;
     active_window = window;
     glfwSetWindowUserPointer(window, this);
@@ -62,8 +61,6 @@ void Camera::unsetCallbacks() {
  * @param yPos y position of the mouse
  */
 void Camera::moveCursorCallback(GLFWwindow* window, double xPos, double yPos) {
-    std::cout << xPos << "    " << yaw << std::endl;
-    std::cout << yPos << "    " << pitch << std::endl;
     auto xpos = static_cast<float>(xPos);
     auto ypos = static_cast<float>(yPos);
     if (first_mouse) {
@@ -114,12 +111,12 @@ void Camera::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) 
 }
 
 FlyingCamera::FlyingCamera(int32_t width, int32_t height, float fov, float zNear, float zFar) :
-    Camera{fov, static_cast<float>(width)/static_cast<float>(height)},
+    Camera{fov, width, height},
     zNear{zNear}, zFar{zFar} {}
 
 
 FlyingCamera::FlyingCamera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, int32_t width, int32_t height, float fov, float zNear, float zFar) :
-    Camera{pos, front, up, fov, static_cast<float>(width)/static_cast<float>(height)},
+    Camera{pos, front, up, fov, width, height},
     zNear{zNear}, zFar{zFar} {}
 
 glm::mat4 FlyingCamera::perspective() {
