@@ -4,8 +4,9 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Canvas.h"
 #include <vector>
+#include "Canvas.h"
+#include "EventHandler.h"
 
 namespace myGl {
 
@@ -24,7 +25,10 @@ public:
     void resize(int32_t width, int32_t height);
     void addCanvas(myGl::Canvas* canvas);
     [[nodiscard]] bool shouldClose() const {return glfwWindowShouldClose(window_ptr);};
+
+
     GLFWwindow* getWindow();
+    void setEventHandler(myGl::EventHandler* eventHandler){this->eventHandler = eventHandler;}
 
     friend class Canvas;
 
@@ -37,6 +41,7 @@ private:
     int32_t height;//CORRESPONDS TO THE FRAMEBUFFER SIZE NOT THE WINDOW SIZE
     GLFWwindow* window_ptr;
     std::vector<myGl::Canvas*> canvasRegions;
+    myGl::EventHandler* eventHandler = nullptr;
 };
 
 

@@ -14,6 +14,8 @@ int main(){
 
     myGl::init();
     myGl::Window w1{800, 600, "Test"};
+    myGl::EventHandler& eventHandler = myGl::EventHandler::getInstance(&w1);
+
 
     myGl::Canvas canvas = myGl::createFullWindowCanvas(w1);
 
@@ -91,6 +93,7 @@ int main(){
         dtime = currentTime - oldTime;
         oldTime = currentTime;
         process_input(w1, &camera1, dtime);
+
 
         canvas.clear(0.f, 1.f, 0.f, 1.f);
         miniCanvas.clear(1.f, 0.f, 1.f, 1.f);

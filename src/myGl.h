@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "Canvas.h"
+#include "EventHandler.h"
 
 
 

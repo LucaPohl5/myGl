@@ -33,8 +33,8 @@ Canvas::~Canvas() {
 void Canvas::resize(int width, int height) {
     this->width = width;
     this->height = height;
-    widthRatio = static_cast<float>(parent_window->width) / static_cast<float>(width);
-    heightRatio = static_cast<float>(parent_window->height) / static_cast<float>(height);
+    widthRatio = static_cast<float>(width) / static_cast<float>(parent_window->width);
+    heightRatio = static_cast<float>(height) / static_cast<float>(parent_window->height);
 }
 
 /**
@@ -46,8 +46,8 @@ void Canvas::resize(int width, int height) {
 void Canvas::move(int newX, int newY) {
     this->xOffset = newX;
     this->yOffset = newY;
-    xRatio = static_cast<float>(parent_window->width) / static_cast<float>(newX);
-    yRatio = static_cast<float>(parent_window->height) / static_cast<float>(newY);
+    xRatio = static_cast<float>(newX) / static_cast<float>(parent_window->width);
+    yRatio = static_cast<float>(newY) / static_cast<float>(parent_window->height);
 }
 
 /**
@@ -87,8 +87,4 @@ void Canvas::drawTo() {
 }
 
 
-
-
-
-
-}
+} //namespace myGl

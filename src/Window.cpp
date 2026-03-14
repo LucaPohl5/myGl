@@ -15,6 +15,8 @@ void init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+
 }
 
 /**
@@ -43,23 +45,17 @@ width{width}, height{height}, canvasRegions{}{
     glfwGetFramebufferSize(window_ptr, &fbwidth, &fbheight);
     this->width = fbwidth;
     this->height = fbheight;
-
-
-    glfwSetWindowUserPointer(window_ptr, this);
-    auto framebuffer_callback = [](GLFWwindow* window, int32_t width, int32_t height) {
-        static_cast<Window*>(glfwGetWindowUserPointer(window))->resize(width, height);
-    };
-    glfwSetFramebufferSizeCallback(window_ptr, framebuffer_callback);
 }
 
 
 /**
- * when destroying a window, set all canvases to have no parent window
+ * when destroying a window, set all canvases to have no parent window and unset Window Callbacks
  */
 Window::~Window() {
     for (auto canvas : canvasRegions) {
         canvas->parent_window = nullptr;
     }
+    this->eventHandler->unsetWindowCallbacks();
 }
 
 
