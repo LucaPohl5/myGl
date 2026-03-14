@@ -17,6 +17,7 @@ int main(){
     myGl::EventHandler& eventHandler = myGl::EventHandler::getInstance(&w1);
 
 
+
     myGl::Canvas canvas = myGl::createFullWindowCanvas(w1);
 
     myGl::Canvas miniCanvas{100, 100, 300, 300, &w1};
@@ -79,7 +80,7 @@ int main(){
 
 
     myGl::FlyingCamera camera1{800, 600, 45, 1.1f, 100.f};
-    //camera1.setCallbacks(w1);
+    eventHandler.setCameraCallbacks(&camera1);
     //glfwSetInputMode(w1, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     //create shader

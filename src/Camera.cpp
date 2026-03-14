@@ -21,46 +21,19 @@ Camera::Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, int widt
     fov{fov}, lastX{static_cast<float>(width) / 2}, lastY{static_cast<float>(height) / 2},
     aspect_ratio{static_cast<float>(width) / static_cast<float>(height)} {}
 
-
-/**
- * sets the glfw mouseCursorPosCallback and mouseScrollCallback to change this cameras view
- */
-void Camera::setCallbacks(GLFWwindow* window) {
-    is_active = true;
-    active_window = window;
-    glfwSetWindowUserPointer(window, this);
-    auto cursor_pos_callback = [](GLFWwindow* window, double xpos, double ypos) {
-        static_cast<Camera*>(glfwGetWindowUserPointer(window))->moveCursorCallback(window, xpos, ypos);
-    };
-    glfwSetCursorPosCallback(window, cursor_pos_callback);
-
-    auto lambda_scroll_callback = [](GLFWwindow* window, double xoffset, double yoffset) {
-        static_cast<Camera*>(glfwGetWindowUserPointer(window))->scrollCallback(window, xoffset, yoffset);
-    };
-    glfwSetScrollCallback(window, lambda_scroll_callback);
-};
-
-/**
- * unsets all the window callbacks for this camera
- */
-void Camera::unsetCallbacks() {
-    if (is_active) {
-        glfwSetWindowUserPointer(active_window, nullptr);
-        glfwSetCursorPosCallback(active_window, nullptr);
-        glfwSetScrollCallback(active_window, nullptr);
-        is_active = false;
-    }
+Camera::~Camera() {
+    if (this->eventHandler != nullptr){this->eventHandler->unsetCameraCallbacks();}
 }
 
+
+
+
 /**
- * callback function for when the mouse is moved.
- * The active camera (camera with bound callbacks) front vector is moved by the amount the mouse is moved.
- * Uses the sensitivity set by setSensitivity(float) to scale the movement
- * @param window window for which the callback functions are set
- * @param xPos x position of the mouse
- * @param yPos y position of the mouse
+ * changes what the camera looks. Used  for mouse cursor callback
+ * @param xPos new xPos of mouse cursor
+ * @param yPos new yPos of mouse cursor
  */
-void Camera::moveCursorCallback(GLFWwindow* window, double xPos, double yPos) {
+void Camera::changeViewDir(double xPos, double yPos) {
     auto xpos = static_cast<float>(xPos);
     auto ypos = static_cast<float>(yPos);
     if (first_mouse) {
@@ -95,12 +68,10 @@ void Camera::moveCursorCallback(GLFWwindow* window, double xPos, double yPos) {
 }
 
 /**
- * callback function for when the mouse scrollwheel is used. Changes the zoom of the camera by changing its fov
- * @param window window for which the callback function is set
- * @param xOffset not used
- * @param yOffset value by which the fov of the camera is downsized
+ * simulates zooming of camera. Is used for scroll Callback
+ * @param yOffset zoom value
  */
-void Camera::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+void Camera::zoom(double yOffset) {
     fov -= static_cast<float>(yOffset);
     if (fov < 1.f) {
         fov = 1.f;

@@ -38,8 +38,6 @@ add_executable(myGlTest
         src/glad.c
         src/Shader.h
         src/Shader.cpp
-        src/Canvas.cpp
-        src/Canvas.h
         src/myGl.h
         src/EventHandler.cpp
         src/EventHandler.h

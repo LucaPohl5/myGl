@@ -5,7 +5,8 @@
 namespace myGl {
 
 EventHandler::~EventHandler() {
-    this->window->setEventHandler(nullptr);
+    if (this->window != nullptr){this->window->setEventHandler(nullptr);};
+    if (this->camera != nullptr){this->camera->setEventHandler(nullptr);};
 }
 
 
@@ -16,7 +17,7 @@ EventHandler::~EventHandler() {
  */
 void EventHandler::setWindowCallbacks(myGl::Window* window) {
     this->window = window;
-    window->setEventHandler = this;
+    window->setEventHandler(this);
     auto window_ptr = window->getWindow();
     glfwMakeContextCurrent(window_ptr);
 
@@ -33,7 +34,7 @@ void EventHandler::setWindowCallbacks(myGl::Window* window) {
  */
 void EventHandler::unsetWindowCallbacks() {
     if (this->window == nullptr){return;}
-    glfwSetFramebufferSizeCallback(this->window->getWindow(), NULL);
+    glfwSetFramebufferSizeCallback(this->window->getWindow(), nullptr);
     this->window = nullptr;
 }
 
@@ -52,10 +53,15 @@ void EventHandler::setCameraCallbacks(myGl::Camera* camera) {
         std::cerr << "EventHandler currently has no window connected! Did you forget to connect a window first?" << std::endl;
         return;
     }
+    if (this->camera != nullptr) { //if camera is already bound, unset the old camera
+        this->camera->setEventHandler(nullptr);
+    }
+
     auto window_ptr = this->window->getWindow();
     glfwSetWindowUserPointer(window_ptr, this);
 
     this->camera = camera;
+    this->camera->setEventHandler(this);
     auto cursor_pos_callback = [](GLFWwindow* window, double xpos, double ypos) {
         static_cast<EventHandler*>(glfwGetWindowUserPointer(window))->cursorCallback(xpos, ypos);
     };
@@ -68,13 +74,25 @@ void EventHandler::setCameraCallbacks(myGl::Camera* camera) {
 }
 
 
+void EventHandler::unsetCameraCallbacks() {
+    if (this->window == nullptr) {
+        std::cerr << "Trying to unbind camera, with no window connected! Unbind the window from the event handler last!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    glfwSetCursorPosCallback(this->window->getWindow(), nullptr);
+    glfwSetScrollCallback(this->window->getWindow(), nullptr);
+    this->camera = nullptr;
+}
 
+void EventHandler::cursorCallback(double xpos, double ypos) {
+    assert(this->camera != nullptr);
+    this->camera->changeViewDir(xpos, ypos);
+}
 
-
-
-
-
-
+void EventHandler::scrollCallback(double xOffset, double yOffset) {
+    assert(this->camera != nullptr);
+    this->camera->zoom(yOffset);
+}
 
 
 

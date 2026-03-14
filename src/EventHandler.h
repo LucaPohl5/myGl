@@ -6,6 +6,8 @@
 
 namespace myGl {
 
+class Camera;
+
 /** Eventhandler that bundles all callback functions for glfw.
  *  Is a singleton to ensure correct handling of callbacks.
  */
@@ -43,6 +45,7 @@ public:
     void setWindowCallbacks(myGl::Window* window);
     void unsetWindowCallbacks();
     void setCameraCallbacks(myGl::Camera* camera);
+    void unsetCameraCallbacks();
 
 
 

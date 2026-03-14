@@ -3,8 +3,12 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "EventHandler.h"
 
 namespace myGl {
+
+class EventHandler;
+
 
 enum class Direction {
     Right,
@@ -22,7 +26,7 @@ public:
     Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, int width, int height);
     Camera(const Camera& other) = delete;
     Camera& operator=(const Camera& other) = delete;
-    virtual ~Camera(){ this->unsetCallbacks();};
+    virtual ~Camera();
     virtual void move(const float& speed, Direction dir){};
 
     [[nodiscard]] glm::mat4 view() const {return glm::lookAt(position, position + front, up);};
@@ -30,10 +34,10 @@ public:
     [[nodiscard]] glm::vec3 getFront() const {return this->front;};
 
     //all functions for mouse callbacks
-    void setCallbacks(GLFWwindow* window);
-    void unsetCallbacks();
-    void moveCursorCallback(GLFWwindow* window, double xPos, double yPos);
-    void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+    void setEventHandler(myGl::EventHandler* eventHandler){this->eventHandler = eventHandler;};
+    void changeViewDir(double xPos, double yPos);
+    void zoom(double yOffset);
+
 protected:
     glm::vec3 position = glm::vec3{0.f};
     glm::vec3 front = glm::vec3{0.0f, 0.0f, -1.f};
@@ -47,8 +51,8 @@ protected:
     float yaw = -90.f;
     float pitch = 0.f;
     bool first_mouse = true;
-    bool is_active = false;
-    GLFWwindow* active_window = nullptr; //TODO: remove later for implementation of proper event handler
+
+    myGl::EventHandler* eventHandler = nullptr;
 };
 
 /**
