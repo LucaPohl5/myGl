@@ -1,12 +1,14 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <cstdlib>
+#include <stb/stb_image.h>
 #include "Window.h"
 #include "EventHandler.h"
 
 namespace myGl {
 /**
- * initiate glfw (replacement for glfw initiation functions)
+ * initiate glfw (replacement for glfw initiation functions) +
+ * set stb flags
  */
 void init() {
     if (glfwInit() == GLFW_FALSE) {
@@ -17,8 +19,7 @@ void init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-
+    stbi_set_flip_vertically_on_load(true);
 }
 
 /**
@@ -151,7 +152,7 @@ void Canvas::clear(float red, float green, float blue, float alpha) {
         glScissor(xOffset, yOffset, width, height);
         glEnable(GL_SCISSOR_TEST);
         glClearColor(red, green, blue, alpha);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glDisable(GL_SCISSOR_TEST);
 
         //set old viewport back

@@ -29,8 +29,11 @@ target_include_directories(assimp
 
 
 #create exe for tests
-add_executable(myGlTest
-        src/main.cpp
+#add_executable(myGlTest
+#        src/main.cpp
+
+#add lib for release
+add_library(myGl
         src/Window.h
         src/Window.cpp
         src/Camera.h
@@ -41,23 +44,27 @@ add_executable(myGlTest
         src/myGl.h
         src/EventHandler.cpp
         src/EventHandler.h
+        src/Model.cpp
+        src/Model.h
+        src/Renderer.cpp
+        src/Renderer.h
 )
 
 if(MSVC)
-    target_compile_options(myGlTest PRIVATE /W4 /WX)
+    target_compile_options(myGl PRIVATE /W4 /WX)
 else()
-    target_compile_options(myGlTest PRIVATE -Wall -Wextra -Wpedantic -v)
+    target_compile_options(myGl PRIVATE -Wall -Wextra -Wpedantic -v)
 endif()
 
 
-set_target_properties(myGlTest PROPERTIES
+set_target_properties(myGl PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO)
 
 
 #link libraries
-target_link_libraries(myGlTest
+target_link_libraries(myGl
         PRIVATE glfw
         PRIVATE assimp
 )

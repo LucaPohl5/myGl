@@ -18,14 +18,19 @@ Camera::Camera(float fov, int width, int height) :
 
 Camera::Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up, float fov, int width, int height) :
     position{pos}, front{front}, up{up},
-    fov{fov}, lastX{static_cast<float>(width) / 2}, lastY{static_cast<float>(height) / 2},
-    aspect_ratio{static_cast<float>(width) / static_cast<float>(height)} {}
+    fov{fov}, aspect_ratio{static_cast<float>(width) / static_cast<float>(height)},
+    lastX{static_cast<float>(width) / 2}, lastY{static_cast<float>(height) / 2} {}
 
 Camera::~Camera() {
     if (this->eventHandler != nullptr){this->eventHandler->unsetCameraCallbacks();}
 }
 
-
+/*
+ * TODO: do not use this move function! Always use derived functions move function!
+ */
+void Camera::move([[maybe_unused]] const float& speed, [[maybe_unused]] Direction dir) {
+    std::cerr << "Base Camera move function used! Use derived class with overridden move function!" << std::endl;
+};
 
 
 /**
@@ -76,8 +81,8 @@ void Camera::zoom(double yOffset) {
     if (fov < 1.f) {
         fov = 1.f;
     }
-    if (fov > 45.f) {
-        fov = 45.f;
+    if (fov > 70.f) {
+        fov = 70.f;
     }
 }
 

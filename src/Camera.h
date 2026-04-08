@@ -27,7 +27,7 @@ public:
     Camera(const Camera& other) = delete;
     Camera& operator=(const Camera& other) = delete;
     virtual ~Camera();
-    virtual void move(const float& speed, Direction dir){};
+    virtual void move(const float& speed, Direction dir);
 
     [[nodiscard]] glm::mat4 view() const {return glm::lookAt(position, position + front, up);};
     [[nodiscard]] glm::vec3 getPos() const {return this->position;};
@@ -39,7 +39,7 @@ public:
     void zoom(double yOffset);
 
 protected:
-    glm::vec3 position = glm::vec3{0.f};
+    glm::vec3 position = glm::vec3{0.f, 0.f, 5.f};
     glm::vec3 front = glm::vec3{0.0f, 0.0f, -1.f};
     glm::vec3 up = glm::vec3{0.f, 1.f, 0.f};
     float fov;

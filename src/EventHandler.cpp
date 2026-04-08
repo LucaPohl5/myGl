@@ -47,7 +47,6 @@ void EventHandler::framebufferCallback(int32_t width, int32_t height) {
 
 
 
-//TODO: continue here!!! implement logic to for camera deletion (that camera pointer here = null) and implement camera callback functions + testing of eventHandler
 void EventHandler::setCameraCallbacks(myGl::Camera* camera) {
     if (this->window == nullptr) {
         std::cerr << "EventHandler currently has no window connected! Did you forget to connect a window first?" << std::endl;
@@ -89,7 +88,7 @@ void EventHandler::cursorCallback(double xpos, double ypos) {
     this->camera->changeViewDir(xpos, ypos);
 }
 
-void EventHandler::scrollCallback(double xOffset, double yOffset) {
+void EventHandler::scrollCallback([[maybe_unused]] double xOffset, double yOffset) {
     assert(this->camera != nullptr);
     this->camera->zoom(yOffset);
 }

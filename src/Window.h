@@ -31,9 +31,6 @@ namespace myGl {
 
         friend class Canvas;
 
-        /**user defined implicit conversion to GLFWwindow* to let glfw functions be run by passing Window class for testing purposes*/
-        operator GLFWwindow*() const {return this->window_ptr;}
-#warning "TODO: remove this implicit conversion later (only for easier testing purposes now)"
 
     private:
         int32_t width; //CORRESPONDS TO THE FRAMEBUFFER SIZE NOT THE WINDOW SIZE

@@ -8,8 +8,12 @@
 #include "Camera.h"
 #include "Shader.h"
 #include "EventHandler.h"
+#include "Model.h"
 
 
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
 
 
 
